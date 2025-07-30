@@ -1,0 +1,2 @@
+This is line 1 of the first example file.
+This has only 1 line.
