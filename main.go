@@ -6,6 +6,20 @@ import(
 	"bufio"
 )
 
+func mapConsoleColors() map[string]string {
+	return map[string]string {
+		"reset": "\033[0m",
+		"red": "\033[31m",
+		"green": "\033[32m",
+		"yellow": "\033[33m",
+		"blue": "\033[34m",
+		"magenta": "\033[35m",
+		"cyan": "\033[36m",
+		"gray": "\033[37m",
+		"white": "\033[97m",
+	}
+}
+
 func fileReadWrapper(path string) *os.File {
 	file, err := os.Open(path)
 
@@ -18,6 +32,8 @@ func fileReadWrapper(path string) *os.File {
 }
 
 func doTheDiff(file1 *os.File, file2 *os.File) {
+	var consoleColors = mapConsoleColors()
+
 	scanner1 := bufio.NewScanner(file1)
 	scanner2 := bufio.NewScanner(file2)
 
@@ -25,11 +41,10 @@ func doTheDiff(file1 *os.File, file2 *os.File) {
 		line1 := scanner1.Text()
 		line2 := scanner2.Text()
 
-		fmt.Printf("Line1: %s\nLine2: %s\n\n", line1, line2)
 		if line1 == line2 {
 			fmt.Printf(line1)
 		} else {
-			fmt.Printf("- %s\n+ %s\n", line1, line2)
+			fmt.Printf(consoleColors["red"] + "- %s\n" + consoleColors["green"] + "+ %s\n" + consoleColors["reset"], line1, line2)
 		}
   }
 
