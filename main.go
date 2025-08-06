@@ -1,4 +1,4 @@
-package mini_diff
+package main
 
 import(
 	"fmt"
@@ -69,7 +69,6 @@ func main() {
 	if(file1 == nil || file2 == nil) {
 		return
 	}
-
 
 	doTheDiff(file1, file2)
 
