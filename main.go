@@ -1,4 +1,4 @@
-package main
+package mini_diff
 
 import(
 	"fmt"
@@ -6,19 +6,17 @@ import(
 	"bufio"
 )
 
-func mapConsoleColors() map[string]string {
-	return map[string]string {
-		"reset": "\033[0m",
-		"red": "\033[31m",
-		"green": "\033[32m",
-		"yellow": "\033[33m",
-		"blue": "\033[34m",
-		"magenta": "\033[35m",
-		"cyan": "\033[36m",
-		"gray": "\033[37m",
-		"white": "\033[97m",
-	}
-}
+const (
+	RESET = "\033[0m"
+	RED = "\033[31m"
+	GREEN = "\033[32m"
+	YELLOW = "\033[33m"
+	BLUE = "\033[34m"
+	MAGENTA = "\033[35m"
+	CYAN = "\033[36m"
+	GRAY = "\033[37m"
+	WHITE = "\033[97m"
+)
 
 func fileReadWrapper(path string) *os.File {
 	file, err := os.Open(path)
@@ -32,19 +30,20 @@ func fileReadWrapper(path string) *os.File {
 }
 
 func doTheDiff(file1 *os.File, file2 *os.File) {
-	var consoleColors = mapConsoleColors()
-
 	scanner1 := bufio.NewScanner(file1)
 	scanner2 := bufio.NewScanner(file2)
+
+	defer file1.Close() // Will run when the function exits
+	defer file2.Close()
 
 	for (scanner1.Scan() && scanner2.Scan()) || scanner2.Scan() {
 		line1 := scanner1.Text()
 		line2 := scanner2.Text()
 
 		if line1 == line2 {
-			fmt.Printf(line1)
+			fmt.Println(line1)
 		} else {
-			fmt.Printf(consoleColors["red"] + "- %s\n" + consoleColors["green"] + "+ %s\n" + consoleColors["reset"], line1, line2)
+			fmt.Printf(RED + "- %s\n" + GREEN + "+ %s\n" + RESET, line1, line2)
 		}
   }
 
@@ -61,8 +60,8 @@ func doTheDiff(file1 *os.File, file2 *os.File) {
 
 func main() {
 	
-	var path1 string = "./example_files/example1.txt"
-	var path2 string = "./example_files/example2.txt"
+	var path1 string = "./example_files/example3.txt"
+	var path2 string = "./example_files/example4.txt"
 
 	file1 := fileReadWrapper(path1)
 	file2 := fileReadWrapper(path2)
@@ -71,7 +70,6 @@ func main() {
 		return
 	}
 
-	defer file1.Close() // Will run when (here) `main` exits.
 
 	doTheDiff(file1, file2)
 
