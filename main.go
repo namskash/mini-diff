@@ -1,27 +1,34 @@
 package main
 
-import(
+import (
+	"bufio"
 	"fmt"
 	"os"
-	"bufio"
 )
 
 const (
-	RESET = "\033[0m"
-	RED = "\033[31m"
-	GREEN = "\033[32m"
-	YELLOW = "\033[33m"
-	BLUE = "\033[34m"
+	RESET   = "\033[0m"
+	RED     = "\033[31m"
+	GREEN   = "\033[32m"
+	YELLOW  = "\033[33m"
+	BLUE    = "\033[34m"
 	MAGENTA = "\033[35m"
-	CYAN = "\033[36m"
-	GRAY = "\033[37m"
-	WHITE = "\033[97m"
+	CYAN    = "\033[36m"
+	GRAY    = "\033[37m"
+	WHITE   = "\033[97m"
 )
+
+func readArgAt(index int) string {
+	if index < len(os.Args) {
+		return os.Args[index]
+	}
+	return ""
+}
 
 func fileReadWrapper(path string) *os.File {
 	file, err := os.Open(path)
 
-	if(err != nil) {
+	if err != nil {
 		fmt.Println(err) // C like printf! Yay!!
 		return nil
 	}
@@ -43,30 +50,33 @@ func doTheDiff(file1 *os.File, file2 *os.File) {
 		if line1 == line2 {
 			fmt.Println(line1)
 		} else {
-			fmt.Printf(RED + "- %s\n" + GREEN + "+ %s\n" + RESET, line1, line2)
+			fmt.Printf(RED+"- %s\n"+GREEN+"+ %s\n"+RESET, line1, line2)
 		}
-  }
+	}
 
 	err1 := scanner1.Err()
 	err2 := scanner2.Err()
 
-  if err1 != nil {
-    fmt.Printf("Error scanning file: %v\n", err1)
-  }
+	if err1 != nil {
+		fmt.Printf("Error scanning file: %v\n", err1)
+	}
 	if err2 != nil {
 		fmt.Printf("Error scanning file: %v\n", err2)
 	}
 }
 
 func main() {
-	
-	var path1 string = "./example_files/example3.txt"
-	var path2 string = "./example_files/example4.txt"
+	var path1 string = readArgAt(1)
+	var path2 string = readArgAt(2)
 
-	file1 := fileReadWrapper(path1)
-	file2 := fileReadWrapper(path2)
+	if path1 == "" || path2 == "" {
+		return
+	}
 
-	if(file1 == nil || file2 == nil) {
+	var file1 *os.File = fileReadWrapper(path1)
+	var file2 *os.File = fileReadWrapper(path2)
+
+	if file1 == nil || file2 == nil {
 		return
 	}
 
