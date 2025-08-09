@@ -29,7 +29,7 @@ func fileReadWrapper(path string) *os.File {
 	file, err := os.Open(path)
 
 	if err != nil {
-		fmt.Println(err) // C like printf! Yay!!
+		fmt.Println(err)
 		return nil
 	}
 
@@ -58,10 +58,10 @@ func doTheDiff(file1 *os.File, file2 *os.File) {
 	err2 := scanner2.Err()
 
 	if err1 != nil {
-		fmt.Printf("Error scanning file: %v\n", err1)
+		fmt.Printf("%sError scanning file: %v%s\n", RED, err1, RESET)
 	}
 	if err2 != nil {
-		fmt.Printf("Error scanning file: %v\n", err2)
+		fmt.Printf("%sError scanning file: %v%s\n", RED, err2, RESET)
 	}
 }
 
@@ -70,13 +70,17 @@ func main() {
 	var path2 string = readArgAt(2)
 
 	if path1 == "" || path2 == "" {
+		fmt.Printf("%sTwo paths not found!%s Usage: ./main <path-to-file-1> <path-to-file-1>%s\n", RED, MAGENTA, RESET)
 		return
 	}
 
 	var file1 *os.File = fileReadWrapper(path1)
 	var file2 *os.File = fileReadWrapper(path2)
 
-	if file1 == nil || file2 == nil {
+	if file1 == nil {
+		return
+	}
+	if file2 == nil {
 		return
 	}
 
