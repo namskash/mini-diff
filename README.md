@@ -8,9 +8,11 @@ A diff-like tool but minimal :)
 - Shows a line by line diff using WHITE, GREEN & RED
 
 ## Screenshots:
-[[screenshots/1.png]]
-[[screenshots/2.png]]
+![1](./screenshots/1.png)
+![2](./screenshots/2.png)
+
 ---
+
 This is the first in a series of small projects that I have endeavoured to create. This is a getting-to-know Go project :)
 This is the first time I am writing in Go, and I think `diff` is probably a good place to start.
 
